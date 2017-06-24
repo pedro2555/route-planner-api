@@ -15,6 +15,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Route Planner API.  If not, see <http://www.gnu.org/licenses/>.
 """
+def read_waypoints(lines):
+    """Reads all waypoints from Waypoints.txt
+
+    Args:
+        lines (tuple): A tuple containing all the lines (file.read())
+    """
+
+    # use navdata.read_waypoint() on every single line
+    # ensure routine continues if exception is raised
+    pass
+
 def read_waypoint(line):
     """Reads and parses a single waypoint line from Waypoints.txt
 

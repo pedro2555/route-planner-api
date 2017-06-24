@@ -27,9 +27,17 @@ class NavdataTests(unittest.TestCase):
     AIRAC data Aerosoft Airbus by Navigraph"""
 
     @unpack
-    @file_data('waypoints_tests.json')
+    @file_data('test_read_waypoints.json')
+    def test_read_waypoints(self, lines, waypoint_count):
+        """"""
+        test = navdata.read_waypoints(lines)
+
+        assertEqual(len(test), waypoint_count)
+
+    @unpack
+    @file_data('test_read_waypoint.json')
     def test_read_waypoint(self, line, ident, location, country):
-        """Test reading a single waypoint line from Waypoints.txt"""
+        """Assigns waypoint data correctly"""
         test = navdata.read_waypoint(line)
 
         self.assertIsNotNone(test)
@@ -38,8 +46,8 @@ class NavdataTests(unittest.TestCase):
         self.assertEqual(test['country'], country)
 
     @data('0000E,0.000a00,0.000000,  ')
-    def test_read_waypoint_value_error(self, line):
-        """Test Exception includes full line"""
+    def test_read_waypoint_error(self, line):
+        """Raises usefull exception info"""
         self.assertRaisesRegex(
             ValueError,
             '^Could not read line \'%s\'$' % line,
