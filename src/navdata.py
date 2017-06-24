@@ -26,8 +26,11 @@ def read_waypoint(line):
     """
     fragments = line.strip().split(',')
 
-    return {
-        'ident': fragments[0].strip(),
-        'location': [float(fragments[2]), float(fragments[1])],
-        'country': fragments[3] if len(fragments) > 3 else ''
-    }
+    try:
+        return {
+            'ident': fragments[0].strip(),
+            'location': [float(fragments[2]), float(fragments[1])],
+            'country': fragments[3] if len(fragments) > 3 else ''
+        }
+    except Exception as error:
+        raise ValueError('Could not read line \'%s\'' % line) from error

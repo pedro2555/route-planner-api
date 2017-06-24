@@ -31,8 +31,17 @@ class NavdataTests(unittest.TestCase):
     def test_read_waypoint(self, line, ident, location, country):
         """Test reading a single waypoint line from Waypoints.txt"""
         test = navdata.read_waypoint(line)
-        
+
         self.assertIsNotNone(test)
         self.assertEqual(test['ident'], ident)
         self.assertEqual(test['location'], location)
         self.assertEqual(test['country'], country)
+
+    @data('0000E,0.000a00,0.000000,  ')
+    def test_read_waypoint_value_error(self, line):
+        """Test Exception includes full line"""
+        self.assertRaisesRegex(
+            ValueError,
+            '^Could not read line \'%s\'$' % line,
+            navdata.read_waypoint,
+            line)
