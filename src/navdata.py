@@ -15,6 +15,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Route Planner API.  If not, see <http://www.gnu.org/licenses/>.
 """
+def read_airways():
+    """Reads all airways from ATS.txt
+
+    Args:
+        lines (tuple(string)): A tuple containing all the lines (file.read())
+
+    Returns:
+        (dict)
+    """
+    pass
+
 def read_airway_info(line):
     """Reads airway heading data
 
@@ -55,6 +66,20 @@ def read_airway_waypoint(line):
         }
     except Exception as error:
         raise ValueError('Could not read line \'%s\'' % line) from error
+
+def read_waypoints():
+    """Reads all waypoints from Waypoints.txt
+
+    Args:
+        lines (tuple(string)): A tuple containing all the lines (file.read())
+
+    Returns:
+        (dict)
+    """
+
+    # use navdata.read_waypoint() on every single line
+    # ensure routine continues if exception is raised
+    pass
 
 def read_waypoint(line):
     """Reads and parses a single waypoint line from Waypoints.txt
