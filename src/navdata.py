@@ -67,7 +67,7 @@ def read_airway_waypoint(line):
     except Exception as error:
         raise ValueError('Could not read line \'%s\'' % line) from error
 
-def read_waypoints():
+def read_waypoints(lines):
     """Reads all waypoints from Waypoints.txt
 
     Args:
@@ -77,9 +77,22 @@ def read_waypoints():
         (dict)
     """
 
-    # use navdata.read_waypoint() on every single line
-    # ensure routine continues if exception is raised
-    pass
+    # change routine to iter()
+    result = []
+
+    for line in lines:
+        # jump empty lines
+        if line.strip() == "":
+            continue
+
+        try:
+            result.append(read_waypoint(line))
+        except Exception as error:
+            # TODO: logging
+            continue
+
+    return result
+    
 
 def read_waypoint(line):
     """Reads and parses a single waypoint line from Waypoints.txt

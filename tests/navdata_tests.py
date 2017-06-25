@@ -69,7 +69,7 @@ class NavdataTests(unittest.TestCase):
         """"""
         test = navdata.read_waypoints(lines)
 
-        assertEqual(len(test), waypoint_count)
+        self.assertEqual(len(test), waypoint_count)
 
     @unpack
     @file_data('test_read_waypoint.json')
