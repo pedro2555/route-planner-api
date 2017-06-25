@@ -15,16 +15,46 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Route Planner API.  If not, see <http://www.gnu.org/licenses/>.
 """
-def read_waypoints(lines):
-    """Reads all waypoints from Waypoints.txt
+def read_airway_info(line):
+    """Reads airway heading data
 
     Args:
-        lines (tuple): A tuple containing all the lines (file.read())
+        line (string): Airway header line
+
+    Returns:
+        (string)    ident
+    """
+    if not line.startswith('A'):
+        raise ValueError('Line does not start with A \'%s\'' % line)
+
+    fragments = line.strip().split(',')
+
+    if fragments[1] == '':
+        raise ValueError('Could not read line \'%s\'' % line)
+
+    return fragments[1]
+
+def read_airway_waypoint(line):
     """
 
-    # use navdata.read_waypoint() on every single line
-    # ensure routine continues if exception is raised
-    pass
+    Args:
+        line (string): Airway waypoint line
+
+    Returns:
+        (dict)  ident, location [lon, lat]
+    """
+    if not line.startswith('S'):
+        raise ValueError('Line does not start with S \'%s\'' % line)
+
+    fragments = line.strip().split(',')
+
+    try:
+        return {
+            'ident': fragments[1],
+            'location': [float(fragments[3]), float(fragments[2])]
+        }
+    except Exception as error:
+        raise ValueError('Could not read line \'%s\'' % line) from error
 
 def read_waypoint(line):
     """Reads and parses a single waypoint line from Waypoints.txt
@@ -33,7 +63,7 @@ def read_waypoint(line):
         line (string): A single line from Waypoints.txt file
 
     Returns:
-        (Dict)  ident, location [lon, lat], country
+        (dict)  ident, location [lon, lat], country
     """
     fragments = line.strip().split(',')
 

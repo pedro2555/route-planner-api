@@ -27,12 +27,41 @@ class NavdataTests(unittest.TestCase):
     AIRAC data Aerosoft Airbus by Navigraph"""
 
     @unpack
-    @file_data('test_read_waypoints.json')
-    def test_read_waypoints(self, lines, waypoint_count):
-        """"""
-        test = navdata.read_waypoints(lines)
+    @file_data('test_read_airway_waypoint.json')
+    def test_read_airway_waypoint(self, line, ident, location):
+        """Assert dict assignment"""
+        test = navdata.read_airway_waypoint(line)
 
-        assertEqual(len(test), waypoint_count)
+        self.assertIsNotNone(test)
+        self.assertEqual(test['ident'], ident)
+        self.assertEqual(test['location'], location)
+
+    @data('F,LOTEE,44.658750,-5.836639,MEGAT,43.498861,-7.596472,233,230,102.94')
+    def test_read_airway_waypoint_error(self, line):
+        """Raises usefull exception info"""
+        self.assertRaisesRegex(
+            ValueError,
+            '^.*%s.*$' % line,
+            navdata.read_airway_waypoint,
+            line)
+
+    @unpack
+    @file_data('test_read_airway_info.json')
+    def test_read_airway_info(self, line, ident):
+        """Assert dict assignment"""
+        test = navdata.read_airway_info(line)
+
+        self.assertIsNotNone(test)
+        self.assertEqual(test, ident)
+
+    @data('A,,7', 'F,A5,24')
+    def test_read_airway_info_error(self, line):
+        """Raises usefull exception info"""
+        self.assertRaisesRegex(
+            ValueError,
+            '^.*%s.*$' % line,
+            navdata.read_airway_info,
+            line)
 
     @unpack
     @file_data('test_read_waypoint.json')
