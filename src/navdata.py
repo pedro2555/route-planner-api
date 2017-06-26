@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Route Planner API.  If not, see <http://www.gnu.org/licenses/>.
 """
-def read_airways():
+def read_airways(lines):
     """Reads all airways from ATS.txt
 
     Args:
@@ -24,7 +24,30 @@ def read_airways():
     Returns:
         (dict)
     """
-    pass
+    result = []
+    airway = None
+    waypoints = None
+
+    for line in lines:
+        if is_airway_info_line(line):
+            if airway not None:
+                result.append({
+                    'airway': airway,
+                    'waypoints': waypoints)
+            airway = read_airway_info(line)
+            waypoints = None
+        elif is_airway_waypoint_line(line):
+            waypoints.append(read_airway_waypoint(line))
+
+    return result
+
+def is_airway_info_line(line):
+    """Lines starting with 'A' are airway info lines"""
+    return line.startswith('A')
+
+def is_airway_waypoint_line(line):
+    """Lines starting with 'S' are airway sequence lines"""
+    return line.startswith('S')
 
 def read_airway_info(line):
     """Reads airway heading data
@@ -44,6 +67,31 @@ def read_airway_info(line):
         raise ValueError('Could not read line \'%s\'' % line)
 
     return fragments[1]
+
+def read_airway_waypoints(lines):
+    """Reads all airway points
+
+    Args:
+        lines (tuple):
+
+    Returns
+        (dict)
+    """
+    # TODO: change routine to iter()
+    result = []
+
+    for line in lines:
+        # jump empty lines
+        if line.strip() == "":
+            continue
+
+        try:
+            result.append(read_airway_waypoint(line))
+        except Exception as error:
+            # TODO: logging
+            continue
+
+    return result
 
 def read_airway_waypoint(line):
     """
@@ -76,8 +124,7 @@ def read_waypoints(lines):
     Returns:
         (dict)
     """
-
-    # change routine to iter()
+    # TODO: change routine to iter()
     result = []
 
     for line in lines:
