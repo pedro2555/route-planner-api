@@ -37,6 +37,8 @@ class NavdataTests(unittest.TestCase):
         """Assert correct number of waypoints in result"""
         test = navdata.read_airway_waypoints(lines)
 
+        # remove empty lines from test
+        lines = list(filter(lambda line: line != '', lines))
         self.assertEqual(len(test), len(lines))
 
     @unpack

@@ -30,10 +30,8 @@ def read_airways(lines):
 
     for line in lines:
         if is_airway_info_line(line):
-            if airway not None:
-                result.append({
-                    'airway': airway,
-                    'waypoints': waypoints)
+            if airway != None:
+                result.append({'airway': airway, 'waypoints': waypoints})
             airway = read_airway_info(line)
             waypoints = None
         elif is_airway_waypoint_line(line):
