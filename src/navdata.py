@@ -75,7 +75,6 @@ def read_airway_waypoints(lines):
     Returns
         (dict)
     """
-    # TODO: change routine to iter()
     result = []
 
     for line in lines:
@@ -83,11 +82,7 @@ def read_airway_waypoints(lines):
         if line.strip() == "":
             continue
 
-        try:
-            result.append(read_airway_waypoint(line))
-        except Exception as error:
-            # TODO: logging
-            continue
+        result.append(read_airway_waypoint(line))
 
     return result
 
@@ -122,7 +117,6 @@ def read_waypoints(lines):
     Returns:
         (dict)
     """
-    # TODO: change routine to iter()
     result = []
 
     for line in lines:
@@ -130,14 +124,10 @@ def read_waypoints(lines):
         if line.strip() == "":
             continue
 
-        try:
-            result.append(read_waypoint(line))
-        except Exception as error:
-            # TODO: logging
-            continue
+        result.append(read_waypoint(line))
 
     return result
-    
+
 
 def read_waypoint(line):
     """Reads and parses a single waypoint line from Waypoints.txt
