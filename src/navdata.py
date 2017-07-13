@@ -39,7 +39,7 @@ def read_airways(lines):
 
     if airway != None:
         result.append({'airway': airway, 'waypoints': waypoints})
-    
+
     return result
 
 def is_airway_info_line(line):
