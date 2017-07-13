@@ -26,17 +26,20 @@ def read_airways(lines):
     """
     result = []
     airway = None
-    waypoints = None
+    waypoints = []
 
     for line in lines:
         if is_airway_info_line(line):
             if airway != None:
                 result.append({'airway': airway, 'waypoints': waypoints})
             airway = read_airway_info(line)
-            waypoints = None
+            waypoints = []
         elif is_airway_waypoint_line(line):
             waypoints.append(read_airway_waypoint(line))
 
+    if airway != None:
+        result.append({'airway': airway, 'waypoints': waypoints})
+    
     return result
 
 def is_airway_info_line(line):
@@ -127,7 +130,6 @@ def read_waypoints(lines):
         result.append(read_waypoint(line))
 
     return result
-
 
 def read_waypoint(line):
     """Reads and parses a single waypoint line from Waypoints.txt

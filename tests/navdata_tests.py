@@ -26,10 +26,25 @@ class NavdataTests(unittest.TestCase):
 
     AIRAC data Aerosoft Airbus by Navigraph"""
 
-    # @unpack
-    # @file_data('test_read_airways.json')
-    # def test_read_airways(self, lines):
-    #     """Assert correct number of waypoints per airway"""
+    @unpack
+    @file_data('test_read_airways.json')
+    def test_read_airways(self, lines, airways):
+        """Assert correct number of waypoints per airway"""
+        test = navdata.read_airways(lines)
+
+        # test for same number of airways
+        self.assertEqual(len(test), len(airways))
+
+        for test_airway, airway in zip(test, airways):
+            # test airway identification
+            self.assertEqual(test_airway['airway'], airway['airway'])
+
+            # test for same number of waypoints
+            self.assertEqual(len(test_airway['waypoints']), len(airway['waypoints']))
+
+            # validate waypoint names
+            for test_waypoint, waypoint in zip(test_airway['waypoints'], airway['waypoints']):
+                self.assertEqual(test_waypoint['ident'], waypoint['ident'])
 
     @unpack
     @file_data('test_read_airway_waypoints.json')
